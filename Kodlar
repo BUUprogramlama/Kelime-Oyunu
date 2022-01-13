@@ -1,0 +1,111 @@
+import random
+
+
+def pick_random_word():
+    word_list = ["python", "c", "java", "swift", "html", "css", "go", "ruby"]
+    random_word = random.choice(word_list)
+    return random_word
+
+
+
+def make_word_classified(word):
+    classified_list = ["_" for i in word]
+    return classified_list
+
+
+def guess():
+    word = pick_random_word()
+    classified_word = make_word_classified(word)
+    print(*classified_word)
+    total_attempts = 0
+
+    while True:
+        try:
+            answer = input("Bir harf tahmin et (Sadece bir harf yaz)>: ").lower()
+            if len(answer) > 1:
+                raise Exception
+        except Exception:
+            print("Her seferinde sadece bir harf!")
+            continue
+        total_attempts += 1
+
+        if total_attempts >= 7:
+            print("Kaybettin!")
+            try_again = input("Tekrar Oynamak İster misin? (evet ise y hayır ise n) >: ")
+            if try_again == 'y':
+                guess()
+            elif try_again == 'n':
+                print("Güle Güle!")
+                quit()
+
+        for i in range(len(word)):
+                if answer == word[i]:
+                    classified_word[i] = answer
+                if "".join(classified_word) == word:
+                    print("Kazandın. Tebrikler!")
+                    quit()
+
+        print(*classified_word, f"\nKalan toplam deneme sayısı: {7 - total_attempts}")
+
+
+guess()
+
+import random
+
+_WORD_LIST = [
+    "python", "c", "java", "swift", "html", "css", "go", "ruby",
+    "javascript"]
+
+_MAX_FAILED_ATTEMPTS = 7
+
+
+def _pick_random_word():
+    return random.choice(_WORD_LIST)
+
+
+def _make_word_classified(word):
+    return ["_"] * len(word)
+
+
+def play_game_again():
+    play_again = input("\nTekrar Oynamak İster misin? (Evet ise e, Hayır ise h)>: ").lower()
+    if play_again == "e":
+        play_the_game()
+        
+    else:
+        return
+
+
+def play_the_game():
+    target_word = _pick_random_word()
+    classified_word = _make_word_classified(target_word)
+    print(*classified_word)
+    attempts_left = _MAX_FAILED_ATTEMPTS
+
+    while attempts_left:
+        answer = input("Bir harf tahmin et (Sadece bir harf yaz) >: ").lower()
+        if len(answer) != 1:
+            print("Her seferinde sadece bir harf!")
+            continue
+
+        attempt_correct = False
+
+        for char_idx, target_char in enumerate(target_word):
+            if answer == target_char:
+                classified_word[char_idx] = answer
+                attempt_correct = True
+
+        if not attempt_correct:
+            attempts_left -= 1
+
+        if "_" not in classified_word:
+            print("\nKazandın. Tebrikler!")
+            break
+
+        print(*classified_word, f"\nKalan toplam deneme sayısı: {attempts_left}")
+
+    play_game_again()
+
+
+if _name_ == "_main_":
+    play_the_game()
